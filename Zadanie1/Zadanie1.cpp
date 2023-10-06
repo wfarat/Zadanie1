@@ -2,10 +2,38 @@
 //
 
 #include <iostream>
-#include <set>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
+class StringCounter {
+public:
+  // Constructor
+  StringCounter() {}
+
+  // Add a string to the counter
+  void addString(const std::string& str) {
+    stringCount[str]++;
+  }
+
+  // Get the count of a specific string
+  int getCount(const std::string& str) const {
+    if (stringCount.find(str) != stringCount.end()) {
+      return stringCount.at(str);
+    }
+    return 0;
+  }
+
+  // Print all elements in the counter
+  void printAllElements() const {
+    for (const auto& pair : stringCount) {
+      std::cout << "String: " << pair.first << ", Count: " << pair.second << std::endl;
+    }
+  }
+
+private:
+  std::unordered_map<std::string, int> stringCount;
+};
 int main() {
   std::cout << "Wprowadź wieloliniowy ciąg (aby zakończyć, naciśnij Enter bez wpisywania tekstu):\n";
 
@@ -20,8 +48,7 @@ int main() {
   }
   std::istringstream iss(multilineInput);
   std::string element;
-  std::set<std::string> mySet;
-
+  StringCounter counter;
   while (std::getline(iss, element, ',')) {
     // Usuń ewentualne spacje na początku i końcu elementu
     size_t start = element.find_first_not_of(" \t\n");
@@ -29,28 +56,15 @@ int main() {
     if (start != std::string::npos && end != std::string::npos) {
       element = element.substr(start, end - start + 1);
     }
-
-    mySet.insert(element);
+    
+    counter.addString(element);
   }
 
   // Wyświetl zawartość zbioru
-  for (const std::string& item : mySet) {
-    std::cout << item << std::endl;
-  }
+  counter.printAllElements();
 
   return 0;
 }
 
 
 
-
-
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
- //porady dotyczące rozpoczynania pracy:
- //  1. użyj okna eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
- //  2. użyj okna programu team explorer, aby nawiązać połączenie z kontrolą źródła
- //  3. użyj okna dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
- //  4. użyj okna lista błędów, aby zobaczyć błędy
- //  5. wybierz pozycję projekt > dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję projekt > dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
- //  6. aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji plik > otwórz > projekt i wybierz plik sln
